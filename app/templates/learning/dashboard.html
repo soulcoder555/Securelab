@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <!-- HERO SECTION -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <div class="neon-card neon-card-cyan-border p-5" style="background: linear-gradient(135deg, rgba(107, 76, 154, 0.15) 0%, rgba(212, 175, 55, 0.12) 100%); border: 3px solid var(--neon-cyan);">
+                <h1 class="hero-title mb-3" style="animation: slide-in-left 0.8s ease-out;">🎯 Hacker's Learning Hub</h1>
+                <p class="hero-description" style="animation: slide-in-right 0.8s ease-out 0.2s both;">Master cybersecurity by exploiting real vulnerabilities in a safe environment. Learn, practice, and earn points!</p>
+                <div class="mt-4" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <span class="badge badge-success">🟢 Active</span>
+                    <span class="badge badge-info" style="background: rgba(60, 165, 250, 0.2); border: 1px solid var(--info); color: var(--info); font-size: 0.9rem;">{{ challenges|length }} Challenges</span>
+                    <span class="badge badge-warning" style="background: rgba(107, 76, 154, 0.2); border: 1px solid var(--neon-purple); color: var(--neon-purple); font-size: 0.9rem;">{{ vulnerabilities|length }} Vulnerabilities</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="neon-card neon-card-lime-border" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(201, 169, 97, 0.05) 100%); box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);">
+                <div class="text-center">
+                    <h3 class="mb-4 text-gold" style="font-size: 1.5rem; letter-spacing: 2px;">YOUR STATS</h3>
+                    <div class="mb-4 p-3" style="background: rgba(212, 175, 55, 0.1); border-radius: 8px; border-left: 4px solid var(--neon-lime);">
+                        <div style="font-size: 3rem; color: var(--neon-lime); font-weight: 900; font-family: 'Orbitron', monospace; animation: neon-glow 2s ease-in-out infinite;">{{ total_points }}</div>
+                        <small style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Total Points</small>
+                    </div>
+                    <div class="mb-2 p-3" style="background: rgba(201, 169, 97, 0.1); border-radius: 8px; border-left: 4px solid var(--neon-cyan);">
+                        <div style="font-size: 2rem; color: var(--neon-cyan); font-weight: 700; font-family: 'Orbitron', monospace;">{{ completed_count }}</div>
+                        <small style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Completed</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUICK STATS SECTION -->
+    <div class="row mb-5">
+        <div class="col-md-3 mb-3">
+            <div class="stat-box neon-card neon-card-cyan-border" style="background: linear-gradient(135deg, rgba(201, 169, 97, 0.08) 0%, rgba(201, 169, 97, 0.02) 100%);">
+                <div style="font-size: 2.2rem; color: var(--neon-cyan); margin-bottom: 10px;">🌱</div>
+                <h5 style="color: var(--neon-cyan); font-size: 1.3rem;">{{ beginner_count }}</h5>
+                <small style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Beginner Challenges</small>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-box neon-card neon-card-lime-border" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.02) 100%);">
+                <div style="font-size: 2.2rem; color: var(--neon-lime); margin-bottom: 10px;">⚡</div>
+                <h5 style="color: var(--neon-lime); font-size: 1.3rem;">{{ intermediate_count }}</h5>
+                <small style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Intermediate Challenges</small>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-box neon-card neon-card-purple-border" style="background: linear-gradient(135deg, rgba(107, 76, 154, 0.08) 0%, rgba(107, 76, 154, 0.02) 100%);">
+                <div style="font-size: 2.2rem; color: var(--neon-purple); margin-bottom: 10px;">🔥</div>
+                <h5 style="color: var(--neon-purple); font-size: 1.3rem;">{{ advanced_count }}</h5>
+                <small style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Advanced Challenges</small>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-box neon-card neon-card-pink-border" style="background: linear-gradient(135deg, rgba(232, 213, 196, 0.08) 0%, rgba(232, 213, 196, 0.02) 100%);">
+                <div style="font-size: 2.2rem; color: var(--neon-pink); margin-bottom: 10px;">👑</div>
+                <h5 style="color: var(--neon-pink); font-size: 1.3rem;">Leaderboard</h5>
+                <small style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Climb Rankings</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION TO LEARNING FEATURES -->
+    <div class="row mb-5">
+        <div class="col-md-4 mb-3">
+            <a href="{{ url_for('learning.learning_paths') }}" class="btn btn-outline-custom btn-lg w-100" style="border-color: var(--neon-cyan); color: var(--neon-cyan); padding: 25px; border-width: 2px; text-decoration: none; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; border-radius: 12px; background: rgba(201, 169, 97, 0.05);">
+                <div style="font-size: 2rem; margin-bottom: 10px;">📚</div>
+                <div style="font-size: 1.1rem; font-weight: 700;">Learning Paths</div>
+                <small style="opacity: 0.7; margin-top: 5px;">Structured Roadmaps</small>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{{ url_for('learning.challenges') }}" class="btn btn-outline-custom btn-lg w-100" style="border-color: var(--neon-lime); color: var(--neon-lime); padding: 25px; border-width: 2px; text-decoration: none; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; border-radius: 12px; background: rgba(212, 175, 55, 0.05);">
+                <div style="font-size: 2rem; margin-bottom: 10px;">🎮</div>
+                <div style="font-size: 1.1rem; font-weight: 700;">Challenges</div>
+                <small style="opacity: 0.7; margin-top: 5px;">Test Your Skills</small>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{{ url_for('learning.vulnerabilities') }}" class="btn btn-outline-custom btn-lg w-100" style="border-color: var(--neon-purple); color: var(--neon-purple); padding: 25px; border-width: 2px; text-decoration: none; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; border-radius: 12px; background: rgba(107, 76, 154, 0.05);">
+                <div style="font-size: 2rem; margin-bottom: 10px;">🔓</div>
+                <div style="font-size: 1.1rem; font-weight: 700;">Vulnerabilities</div>
+                <small style="opacity: 0.7; margin-top: 5px;">Security Database</small>
+            </a>
+        </div>
+    </div>
+                <div>Challenges</div>
+                <small style="display: block; opacity: 0.7;">Practice exploiting vulnerabilities</small>
+            </a>
+        </div>
+        <div class="col-md-6 mb-3">
+            <a href="{{ url_for('learning.vulnerabilities') }}" class="btn btn-outline-light btn-lg w-100" style="border-color: var(--neon-purple); color: var(--neon-purple); padding: 20px;">
+                <div style="font-size: 1.5rem;">🔍</div>
+                <div>Vulnerabilities</div>
+                <small style="display: block; opacity: 0.7;">Vulnerability database & details</small>
+            </a>
+        </div>
+        <div class="col-md-6 mb-3">
+            <a href="{{ url_for('learning.resources') }}" class="btn btn-outline-light btn-lg w-100" style="border-color: var(--neon-pink); color: var(--neon-pink); padding: 20px;">
+                <div style="font-size: 1.5rem;">📖</div>
+                <div>Resources</div>
+                <small style="display: block; opacity: 0.7;">Guides, tools, and documentation</small>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="neon-card neon-card-cyan-border">
+                <h2 class="mb-4" style="color: var(--neon-cyan);">🚀 Recent Activity</h2>
+                {% if user_challenges %}
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        {% for progress in user_challenges|reverse|list|first(5) %}
+                        <div class="activity-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 style="color: var(--neon-cyan); margin-bottom: 5px;">{{ progress.challenge.title }}</h6>
+                                    <small style="color: var(--text-secondary);">{{ progress.challenge.vulnerability_type }} • Level: {{ progress.challenge.difficulty }}</small>
+                                </div>
+                                {% if progress.completed %}
+                                <span class="badge" style="background: var(--neon-cyan); color: #0f0d15;">✓ Completed</span>
+                                {% else %}
+                                <span class="badge" style="background: var(--neon-pink); color: #0f0d15;">In Progress</span>
+                                {% endif %}
+                            </div>
+                            <small style="color: var(--text-secondary); display: block; margin-top: 8px;">Attempts: {{ progress.attempts }} | Points: {{ progress.points_earned }}/{{ progress.challenge.points }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p style="color: var(--text-secondary); text-align: center; padding: 30px;">No challenges started yet. <a href="{{ url_for('learning.challenges') }}" style="color: var(--neon-lime);">Start your first challenge →</a></p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="neon-card neon-card-purple-border">
+                <h3 class="mb-4" style="color: var(--neon-purple);">💡 Tips & Tricks</h3>
+                <div style="font-size: 0.95rem; line-height: 1.8;">
+                    <div class="mb-3">
+                        <strong style="color: var(--neon-cyan);">1. Read Carefully</strong>
+                        <p style="color: var(--text-secondary); margin-top: 5px; margin-bottom: 0;">Understand the vulnerability before attempting to exploit it.</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong style="color: var(--neon-lime);">2. Use Hints Wisely</strong>
+                        <p style="color: var(--text-secondary); margin-top: 5px; margin-bottom: 0;">Hints reduce your learning but help when stuck.</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong style="color: var(--neon-pink);">3. Check Write-ups</strong>
+                        <p style="color: var(--text-secondary); margin-top: 5px; margin-bottom: 0;">After completion, review write-ups to learn better techniques.</p>
+                    </div>
+                    <div>
+                        <strong style="color: var(--neon-purple);">4. Compete & Climb</strong>
+                        <p style="color: var(--text-secondary); margin-top: 5px; margin-bottom: 0;">Compete on the <a href="{{ url_for('learning.leaderboard') }}" style="color: var(--neon-cyan);">leaderboard</a> for glory!</p>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ url_for('learning.progress') }}" class="btn btn-outline-light w-100 mt-3" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">
+                View Full Progress →
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.activity-item {
+    padding: 15px;
+    border-left: 3px solid var(--neon-cyan);
+    margin-bottom: 10px;
+    background: rgba(212, 175, 55, 0.04);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    background: rgba(212, 175, 55, 0.08);
+    border-left-color: var(--neon-lime);
+}
+</style>
+{% endblock %}

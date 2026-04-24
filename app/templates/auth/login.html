@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="neon-card neon-card-cyan-border">
+            <div class="text-center mb-4">
+                <h2 class="neon-cyan" style="font-family: 'Orbitron', monospace; font-weight: 900; letter-spacing: 2px;">🔐 ACCESS DENIED</h2>
+                <p class="neon-lime" style="font-size: 0.9rem; letter-spacing: 1px;">AUTHENTICATE TO PROCEED</p>
+            </div>
+            
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.username.label(class="form-label") }}
+                    {{ form.username(class="form-control", placeholder="Enter your username") }}
+                    {% if form.username.errors %}
+                        <div class="alert-neon danger" style="margin-top: 5px; padding: 8px;">
+                            {% for error in form.username.errors %}
+                                <small>{{ error }}</small><br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control", placeholder="Enter your password") }}
+                    {% if form.password.errors %}
+                        <div class="alert-neon danger" style="margin-top: 5px; padding: 8px;">
+                            {% for error in form.password.errors %}
+                                <small>{{ error }}</small><br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-4 form-check">
+                    {{ form.remember(class="form-check-input") }}
+                    {{ form.remember.label(class="form-check-label") }}
+                </div>
+                {{ form.submit(class="btn-neon btn-neon-cyan w-100", value="LOGIN") }}
+            </form>
+            
+            <div class="text-center mt-4">
+                <hr style="border-color: var(--neon-cyan); opacity: 0.3;">
+                <p class="neon-lime" style="font-size: 0.9rem;">New user? <a href="{{ url_for('auth.register') }}" class="link-neon">Register here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="section-title neon-purple">🔐 USER CLAIMS VALIDATION</h2>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="neon-card neon-card-purple-border">
+            {% if result.error %}
+                <div class="alert-neon danger">
+                    <span class="alert-icon">⚠️</span>
+                    <strong>ERROR:</strong> {{ result.error }}
+                </div>
+            {% else %}
+                <!-- Stats Row -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="security-stat neon-card neon-card-cyan-border">
+                            <div class="stat-number neon-cyan">{{ result.total_users }}</div>
+                            <div class="stat-label">TOTAL USERS</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="security-stat neon-card neon-card-lime-border">
+                            <div class="stat-number neon-lime">{{ result.valid_users }}</div>
+                            <div class="stat-label">VALID CLAIMS</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="security-stat neon-card neon-card-pink-border">
+                            <div class="stat-number neon-pink">{{ result.invalid_users|length }}</div>
+                            <div class="stat-label">INVALID CLAIMS</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="security-stat neon-card {% if result.all_valid %}neon-card-lime-border{% else %}neon-card-pink-border{% endif %}">
+                            <div class="stat-number {% if result.all_valid %}neon-lime{% else %}neon-pink{% endif %}">
+                                {% if result.all_valid %}✓{% else %}✗{% endif %}
+                            </div>
+                            <div class="stat-label">{% if result.all_valid %}ALL VALID{% else %}ISSUES FOUND{% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Issues Alert -->
+                {% if result.invalid_users %}
+                    <div class="alert-neon warning mb-4">
+                        <span class="alert-icon">⚠️</span>
+                        <div>
+                            <strong>⚠️ ISSUES FOUND - {{ result.invalid_users|length }} user(s) with invalid claims:</strong>
+                            <ul style="margin-top: 10px; margin-bottom: 0;">
+                                {% for invalid_user in result.invalid_users %}
+                                    <li>
+                                        <strong>{{ invalid_user.username }} (ID: {{ invalid_user.user_id }})</strong><br>
+                                        <small style="color: var(--neon-pink);">{{ invalid_user.issue }}</small>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert-neon success mb-4">
+                        <span class="alert-icon">✓</span>
+                        <strong>✓ ALL USER CLAIMS ARE VALID!</strong> All users have proper permissions, active status, and valid data.
+                    </div>
+                {% endif %}
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('admin.check_claims', json=1) }}" class="btn-neon btn-neon-cyan">
+                        📋 VIEW JSON RESPONSE
+                    </a>
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn-neon btn-neon-purple">
+                        ← BACK TO DASHBOARD
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

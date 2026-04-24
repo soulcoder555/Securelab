@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h2 class="section-title neon-pink">⚙️ ADMIN DASHBOARD</h2>
+            <p class="neon-blue" style="font-size: 0.95rem;">System administration & user management</p>
+        </div>
+        <a href="{{ url_for('admin.check_claims') }}" class="btn-neon btn-neon-pink">
+            🔍 CHECK CLAIMS
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <div class="neon-card neon-card-purple-border">
+            <h5 class="neon-purple mb-4">👥 USER MANAGEMENT</h5>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>👤 USER</th>
+                            <th>📧 EMAIL</th>
+                            <th>🔐 ROLE</th>
+                            <th>📊 STATUS</th>
+                            <th>📅 CREATED</th>
+                            <th>⚙️ ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td><strong>{{ user.username }}</strong></td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    <span class="badge-neon {% if user.is_admin() %}badge-pending{% else %}badge-success{% endif %}">
+                                        {{ user.role|upper }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge-neon {% if user.is_active %}badge-success{% else %}badge-pending{% endif %}">
+                                        {{ '● ACTIVE' if user.is_active else '● INACTIVE' }}
+                                    </span>
+                                </td>
+                                <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <a href="{{ url_for('admin.manage_user', user_id=user.id) }}" class="btn-neon btn-neon-cyan" style="padding: 4px 8px; font-size: 0.75rem;">EDIT</a>
+                                        <form method="POST" action="{{ url_for('admin.toggle_user', user_id=user.id) }}" class="d-inline">
+                                            <button type="submit" class="btn-neon {% if user.is_active %}btn-neon-pink{% else %}btn-neon-lime{% endif %}" style="padding: 4px 8px; font-size: 0.75rem;">
+                                                {{ 'DISABLE' if user.is_active else 'ENABLE' }}
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="neon-card neon-card-lime-border">
+            <h5 class="neon-lime mb-4">🕐 RECENT ACTIVITY</h5>
+            {% if activities %}
+                <div class="activity-list">
+                    {% for activity in activities %}
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <span class="activity-title">{{ activity.action }}</span>
+                            </div>
+                            <div class="activity-meta">
+                                <small style="display: block; margin-bottom: 5px;">
+                                    <strong>{% if activity.user %}{{ activity.user.username }}{% else %}SYSTEM{% endif %}</strong>
+                                </small>
+                                {% if activity.details %}
+                                    <small style="display: block; margin-bottom: 5px;">{{ activity.details|truncate(60) }}</small>
+                                {% endif %}
+                                <span class="timestamp">{{ activity.timestamp.strftime('%m-%d %H:%M') }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p class="neon-pink">No recent activity recorded.</p>
+                </div>
+            {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if form %}
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Edit User: {{ user.username }}</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label") }}
+                        {{ form.username(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.role.label(class="form-label") }}
+                        {{ form.role(class="form-select") }}
+                    </div>
+                    <div class="mb-3 form-check">
+                        {{ form.is_active(class="form-check-input") }}
+                        {{ form.is_active.label(class="form-check-label") }}
+                    </div>
+                    {{ form.submit(class="btn btn-primary") }}
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary ms-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

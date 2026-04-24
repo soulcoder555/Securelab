@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row mb-5">
+        <div class="col">
+            <h1 class="hero-title mb-2">📚 Learning Resources</h1>
+            <p class="hero-description">Recommended guides, tools, and external resources for cybersecurity learning</p>
+        </div>
+    </div>
+
+    <!-- Guides Section -->
+    <div class="row mb-5">
+        <div class="col">
+            <h2 style="color: var(--neon-cyan); margin-bottom: 30px;">📖 Learning Guides</h2>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        {% for guide in resources.guides %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="neon-card neon-card-cyan-border h-100">
+                <h5 style="color: var(--neon-cyan); margin-bottom: 10px;">{{ guide.title }}</h5>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">{{ guide.description }}</p>
+                <a href="{{ guide.url }}" target="_blank" class="btn btn-sm btn-outline-light" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">
+                    Read Guide →
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Tools Section -->
+    <div class="row mb-5">
+        <div class="col">
+            <h2 style="color: var(--neon-lime); margin-bottom: 30px;">🛠️ Essential Tools</h2>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        {% for tool in resources.tools %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="neon-card neon-card-lime-border h-100">
+                <h5 style="color: var(--neon-lime); margin-bottom: 10px;">{{ tool.name }}</h5>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">{{ tool.description }}</p>
+                <a href="{{ tool.url }}" target="_blank" class="btn btn-sm btn-outline-light" style="border-color: var(--neon-lime); color: var(--neon-lime);">
+                    Download / Visit →
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Best Practices -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="neon-card neon-card-purple-border">
+                <h2 style="color: var(--neon-purple); margin-bottom: 30px;">🎓 Learning Best Practices</h2>
+                
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--neon-cyan); margin-bottom: 15px;">1. Understand Before Exploiting</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.8;">Don't just run exploits blindly. Take time to understand:</p>
+                    <ul style="color: var(--text-secondary); line-height: 1.8;">
+                        <li>How the vulnerability works</li>
+                        <li>Why it exists in the code</li>
+                        <li>The impact if exploited</li>
+                        <li>How to defend against it</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--neon-lime); margin-bottom: 15px;">2. Use Security Tools Properly</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.8;">Learn to use enterprise security tools like Burp Suite, OWASP ZAP, and Wireshark. These are industry-standard and critical for penetration testing.</p>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--neon-pink); margin-bottom: 15px;">3. Document Your Findings</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.8;">Always document:</p>
+                    <ul style="color: var(--text-secondary); line-height: 1.8;">
+                        <li>Steps to reproduce the vulnerability</li>
+                        <li>Proof-of-concept code</li>
+                        <li>Impact assessment</li>
+                        <li>Recommended fixes</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--neon-cyan); margin-bottom: 15px;">4. Stay Ethical & Legal</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.8;">🚨 Important Rules:</p>
+                    <ul style="color: var(--text-secondary); line-height: 1.8;">
+                        <li>✓ Only test systems you own or have explicit permission to test</li>
+                        <li>✓ Never attack production systems without authorization</li>
+                        <li>✓ Respect responsible disclosure practices</li>
+                        <li>✗ Don't use skills for malicious purposes</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--neon-purple); margin-bottom: 15px;">5. Join the Community</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.8;">Connect with other security enthusiasts through:</p>
+                    <ul style="color: var(--text-secondary); line-height: 1.8;">
+                        <li>Bug bounty platforms (HackerOne, Bugcrowd)</li>
+                        <li>Security conferences and CTF competitions</li>
+                        <li>Online communities (Reddit, Discord security servers)</li>
+                        <li>Security research blogs and podcasts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="neon-card neon-card-pink-border mb-4">
+                <h4 style="color: var(--neon-pink); margin-bottom: 20px;">⚡ Quick References</h4>
+                
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(232, 213, 196, 0.05); border-radius: 6px;">
+                    <h5 style="color: var(--neon-pink); margin-bottom: 10px;">OWASP Top 10</h5>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0;">The 10 most critical web application security risks</p>
+                </div>
+
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(212, 175, 55, 0.08); border-radius: 6px;">
+                    <h5 style="color: var(--neon-cyan); margin-bottom: 10px;">MITRE ATT&CK</h5>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0;">Framework of adversary tactics and techniques</p>
+                </div>
+
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(107, 76, 154, 0.08); border-radius: 6px;">
+                    <h5 style="color: var(--neon-purple); margin-bottom: 10px;">CWE/CVSS</h5>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0;">Common Weakness Enumeration & severity scoring</p>
+                </div>
+
+                <div style="padding: 15px; background: rgba(107, 76, 154, 0.08); border-radius: 6px;">
+                    <h5 style="color: var(--neon-lime); margin-bottom: 10px;">Bug Bounty</h5>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0;">Find real vulnerabilities and get paid for reporting them</p>
+                </div>
+            </div>
+
+            <div class="neon-card neon-card-lime-border">
+                <h4 style="color: var(--neon-lime); margin-bottom: 15px;">🎯 Next Steps</h4>
+                <ol style="color: var(--text-secondary); line-height: 1.9;">
+                    <li>Complete beginner challenges</li>
+                    <li>Read vulnerability database entries</li>
+                    <li>Download recommended tools</li>
+                    <li>Practice on intermediate challenges</li>
+                    <li>Compete on leaderboard</li>
+                </ol>
+                
+                <a href="{{ url_for('learning.dashboard') }}" class="btn btn-outline-light btn-sm w-100 mt-4" style="border-color: var(--neon-lime); color: var(--neon-lime);">
+                    Start Learning Now →
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

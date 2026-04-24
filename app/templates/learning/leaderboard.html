@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row mb-5">
+        <div class="col">
+            <h1 class="hero-title mb-2">👑 Hacker Leaderboard</h1>
+            <p class="hero-description">Compete with other learners and climb to the top!</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="neon-card neon-card-cyan-border">
+                <table class="table" style="margin-bottom: 0;">
+                    <thead>
+                        <tr>
+                            <th style="color: var(--neon-cyan); text-align: center; width: 80px;">Rank</th>
+                            <th style="color: var(--neon-cyan);">Hacker Name</th>
+                            <th style="color: var(--neon-cyan); text-align: right;">Points</th>
+                            <th style="color: var(--neon-cyan); text-align: right;">Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in leaderboard %}
+                        <tr {% if entry.is_current_user %}style="background: rgba(212, 175, 55, 0.08);"{% endif %}>
+                            <td style="text-align: center; color: var(--neon-lime); font-weight: bold;">
+                                {% if entry.rank == 1 %}
+                                🥇 1st
+                                {% elif entry.rank == 2 %}
+                                🥈 2nd
+                                {% elif entry.rank == 3 %}
+                                🥉 3rd
+                                {% else %}
+                                #{{ entry.rank }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div style="color: var(--neon-cyan); font-weight: bold;">
+                                    {% if entry.is_current_user %}
+                                    👤 {{ entry.username }} (You)
+                                    {% else %}
+                                    {{ entry.username }}
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td style="text-align: right; color: var(--neon-lime); font-weight: bold;">{{ entry.points }}</td>
+                            <td style="text-align: right; color: var(--neon-pink); font-weight: bold;">{{ entry.completed }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="neon-card neon-card-purple-border mb-4">
+                <h4 style="color: var(--neon-purple); margin-bottom: 20px;">📊 Leaderboard Stats</h4>
+                
+                <div style="margin-bottom: 15px; padding: 12px; background: rgba(107, 76, 154, 0.1); border-radius: 4px; border-left: 3px solid var(--neon-cyan);">
+                    <small style="color: var(--text-secondary);">Your Current Rank</small>
+                    <div style="color: var(--neon-cyan); font-weight: bold; font-size: 1.5rem; margin-top: 5px;">
+                        {% for entry in leaderboard %}
+                            {% if entry.is_current_user %}
+                            #{{ entry.rank }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px; padding: 12px; background: rgba(212, 175, 55, 0.08); border-radius: 4px; border-left: 3px solid var(--neon-lime);">
+                    <small style="color: var(--text-secondary);">Your Points</small>
+                    <div style="color: var(--neon-lime); font-weight: bold; font-size: 1.5rem; margin-top: 5px;">
+                        {% for entry in leaderboard %}
+                            {% if entry.is_current_user %}
+                            {{ entry.points }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div style="padding: 12px; background: rgba(232, 213, 196, 0.08); border-radius: 4px; border-left: 3px solid var(--neon-pink);">
+                    <small style="color: var(--text-secondary);">Challenges Completed</small>
+                    <div style="color: var(--neon-pink); font-weight: bold; font-size: 1.5rem; margin-top: 5px;">
+                        {% for entry in leaderboard %}
+                            {% if entry.is_current_user %}
+                            {{ entry.completed }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="neon-card neon-card-lime-border">
+                <h5 style="color: var(--neon-lime); margin-bottom: 15px;">💡 Tips to Climb</h5>
+                <ul style="color: var(--text-secondary); list-style: none; padding: 0; font-size: 0.9rem;">
+                    <li style="margin-bottom: 10px;">✓ Complete more challenges to earn points</li>
+                    <li style="margin-bottom: 10px;">✓ Tackle advanced challenges for more points</li>
+                    <li style="margin-bottom: 10px;">✓ Minimize hints used for bonus points</li>
+                    <li style="margin-bottom: 10px;">✓ Complete challenges with fewer attempts</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

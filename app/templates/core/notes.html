@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="section-title neon-lime mb-5">📝 MY NOTES</h2>
+
+<div class="row">
+    <div class="col-lg-4 mb-4">
+        <div class="neon-card neon-card-cyan-border">
+            <h5 class="neon-cyan mb-4">{% if edit_note %}⚙️ EDIT NOTE{% else %}✍️ CREATE NOTE{% endif %}</h5>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control") }}
+                    {% if form.title.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.title.errors %}
+                                {{ error }}<br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.content.label(class="form-label") }}
+                    {{ form.content(class="form-control", rows=5) }}
+                    {% if form.content.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.content.errors %}
+                                {{ error }}<br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3 form-check">
+                    {{ form.is_completed(class="form-check-input") }}
+                    {{ form.is_completed.label(class="form-check-label") }}
+                </div>
+                {{ form.submit(class="btn-neon btn-neon-cyan w-100") }}
+                {% if edit_note %}
+                    <a href="{{ url_for('core.notes') }}" class="btn-neon btn-neon-pink w-100 mt-2">CANCEL</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="neon-card neon-card-lime-border">
+            <div class="d-flex justify-content-between align-items-center mb-4" style="flex-wrap: wrap; gap: 15px;">
+                <h5 class="neon-lime mb-0">📚 ALL NOTES</h5>
+                <form method="GET" class="d-flex gap-2" style="flex-wrap: wrap;">
+                    <input type="text" name="q" class="form-control" placeholder="🔍 Search..." value="{{ query }}" style="max-width: 200px;">
+                    <button type="submit" class="btn-neon btn-neon-lime">GO</button>
+                </form>
+            </div>
+            {% if notes %}
+                <div class="activity-list">
+                    {% for note in notes %}
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <span class="activity-title {% if note.is_completed %}note-completed{% endif %}">{{ note.title }}</span>
+                                {% if note.is_completed %}
+                                    <span class="badge-neon badge-success">✓ COMPLETED</span>
+                                {% else %}
+                                    <span class="badge-neon badge-pending">⧗ PENDING</span>
+                                {% endif %}
+                            </div>
+                            <p style="margin-bottom: 10px; color: var(--text-secondary); font-size: 0.9rem; {% if note.is_completed %}text-decoration: line-through;{% endif %}">
+                                {{ note.content|truncate(100) }}
+                            </p>
+                            <div class="d-flex gap-2 justify-content-between align-items-center">
+                                <span class="timestamp">⏰ {{ note.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ url_for('core.edit_note', note_id=note.id) }}" class="btn-neon btn-neon-cyan" style="padding: 4px 8px; font-size: 0.8rem;">EDIT</a>
+                                    <form method="POST" action="{{ url_for('core.delete_note', note_id=note.id) }}" class="d-inline"
+                                          onsubmit="return confirm('Are you sure you want to delete this note?')">
+                                        <button type="submit" class="btn-neon btn-neon-pink" style="padding: 4px 8px; font-size: 0.8rem;">DELETE</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p class="neon-pink">No notes yet. Create one to get started! 📝</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+                    <p class="text-muted">No notes found. Create your first note!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

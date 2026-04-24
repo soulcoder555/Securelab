@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  securelab:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=dev-secret-key-change-in-production
+      - DATABASE_URL=sqlite:///app.db
+      - TRAINING_MODE=false
+    volumes:
+      - ./app.db:/app/app.db
+      - ./app/static/uploads:/app/app/static/uploads
+    command: gunicorn --bind 0.0.0.0:8000 wsgi:app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Add a database service if switching to PostgreSQL
+  # db:
+  #   image: postgres:13
+  #   environment:
+  #     POSTGRES_DB: securelab
+  #     POSTGRES_USER: securelab
+  #     POSTGRES_PASSWORD: securelab_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

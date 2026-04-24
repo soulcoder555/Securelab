@@ -1,0 +1,13 @@
+Flask>=3.0
+Flask-SQLAlchemy
+Flask-Login
+Flask-WTF
+Flask-Talisman
+python-dotenv
+gunicorn
+pytest
+pytest-flask
+Werkzeug
+Bootstrap-Flask
+WTForms
+email-validator

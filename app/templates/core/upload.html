@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="section-title neon-lime mb-2">📎 FILE UPLOAD</h2>
+<p class="neon-blue" style="font-size: 0.95rem; margin-bottom: 30px;">Allowed: txt, pdf, png, jpg, jpeg, gif | Max: 16MB</p>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="neon-card neon-card-lime-border">
+            <h5 class="neon-lime mb-4">📤 UPLOAD NEW FILE</h5>
+            <form method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.file.label(class="form-label") }}
+                    {{ form.file(class="form-control") }}
+                    {% if form.file.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.file.errors %}
+                                {{ error }}<br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                {{ form.submit(class="btn-neon btn-neon-lime w-100") }}
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="neon-card neon-card-cyan-border">
+            <h5 class="neon-cyan mb-4">📁 YOUR FILES</h5>
+            {% if files %}
+                <div class="activity-list">
+                    {% for file in files %}
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <span class="activity-title">📄 {{ file }}</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{{ url_for('core.uploaded_file', filename=file) }}" class="btn-neon btn-neon-cyan" style="padding: 4px 8px; font-size: 0.8rem;" target="_blank">VIEW</a>
+                                <a href="{{ url_for('core.download_file', filename=file) }}" class="btn-neon btn-neon-lime" style="padding: 4px 8px; font-size: 0.8rem;" download>DOWNLOAD</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p class="neon-pink">No files uploaded yet. Start securing your files! 🔒</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

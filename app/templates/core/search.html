@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="section-title neon-lime mb-5">🔍 SEARCH NOTES</h2>
+<p class="neon-blue" style="font-size: 0.95rem; margin-bottom: 30px;">Search through your notes by title or content for quick access.</p>
+
+<div class="row">
+    <div class="col-12">
+        <div class="neon-card neon-card-purple-border">
+            <form method="POST" class="mb-4">
+                {{ form.hidden_tag() }}
+                <div class="input-group mb-3">
+                    {{ form.query(class="form-control", placeholder="Enter search terms...") }}
+                    {{ form.submit(class="btn-neon btn-neon-purple") }}
+                </div>
+                {% if form.query.errors %}
+                    <div class="text-danger small">
+                        {% for error in form.query.errors %}
+                            {{ error }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </form>
+
+            {% if results %}
+                <div class="mb-4">
+                    <h6 class="neon-lime">🎯 SEARCH RESULTS ({{ results|length }} FOUND)</h6>
+                </div>
+                <div class="activity-list">
+                    {% for note in results %}
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <a href="{{ url_for('core.edit_note', note_id=note.id) }}" class="link-neon">{{ note.title }}</a>
+                                {% if note.is_completed %}
+                                    <span class="badge-neon badge-success">COMPLETED</span>
+                                {% else %}
+                                    <span class="badge-neon badge-pending">ACTIVE</span>
+                                {% endif %}
+                            </div>
+                            <div class="activity-meta">
+                                <p style="margin-bottom: 5px;">{{ note.content|truncate(150) }}</p>
+                                <span class="timestamp">{{ note.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% elif request.method == 'POST' %}
+                <div class="alert-neon info">
+                    <span class="alert-icon">ℹ️</span>
+                    No notes found matching your search query.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

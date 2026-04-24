@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row mb-5">
+        <div class="col">
+            <h1 class="hero-title mb-3">📚 Learning Paths</h1>
+            <p class="hero-description">Follow structured learning paths designed to take you from novice to expert hacker</p>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for path_id, path_info in paths.items() %}
+        <div class="col-lg-6 mb-4">
+            <div class="neon-card h-100" style="border: 2px solid var(--neon-cyan); position: relative; overflow: hidden;">
+                <!-- Progress bar -->
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: rgba(212, 175, 55, 0.2);">
+                    <div style="height: 100%; background: var(--neon-lime); width: {{ path_info.progress }}%; transition: width 0.3s ease;"></div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; margin-top: 10px;">
+                    <div>
+                        <h2 style="color: var(--neon-cyan); margin-bottom: 5px;" >{{ path_info.icon }} {{ path_info.name }}</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 0;">{{ path_info.description }}</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(107, 76, 154, 0.08); border-radius: 6px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="color: var(--text-secondary);">Progress</span>
+                        <span style="color: var(--neon-lime); font-weight: bold;">{{ path_info.completed }}/{{ path_info.total }}</span>
+                    </div>
+                    <div style="height: 8px; background: rgba(212, 175, 55, 0.2); border-radius: 4px; overflow: hidden;">
+                        <div style="height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-lime)); width: {{ path_info.progress }}%;"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h5 style="color: var(--neon-cyan); margin-bottom: 12px;">Challenges in this path:</h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        {% for challenge in path_info.challenges[:4] %}
+                        <div style="padding: 10px; background: rgba(212, 175, 55, 0.05); border-left: 3px solid var(--neon-cyan); border-radius: 4px;">
+                            <small style="color: var(--text-secondary);">{{ challenge.title[:20] }}...</small>
+                            <br>
+                            <tiny style="color: var(--neon-lime);">{{ challenge.difficulty }}</tiny>
+                        </div>
+                        {% endfor %}
+                        {% if path_info.total > 4 %}
+                        <div style="padding: 10px; background: rgba(212, 175, 55, 0.05); border-left: 3px solid var(--neon-pink); border-radius: 4px;">
+                            <small style="color: var(--neon-pink);">+{{ path_info.total - 4 }} more</small>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <a href="{{ url_for('learning.challenges', type=path_id) }}" class="btn btn-primary w-100">
+                    Start Learning →
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Recommended for You -->
+    <div class="row mt-5">
+        <div class="col">
+            <div class="neon-card neon-card-purple-border">
+                <h3 style="color: var(--neon-purple); margin-bottom: 20px;">🎯 Recommended Learning Order</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="padding: 15px; background: rgba(107, 76, 154, 0.08); border-radius: 6px; border-left: 4px solid var(--neon-cyan);">
+                        <h5 style="color: var(--neon-cyan); margin-bottom: 10px;">1️⃣ Start with Basics</h5>
+                        <p style="color: var(--text-secondary); margin-bottom: 10px;">Begin with Web Security Fundamentals to understand common web vulnerabilities.</p>
+                        <a href="{{ url_for('learning.challenges', difficulty='Beginner') }}" class="btn btn-sm btn-outline-light" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">
+                            View Beginner Challenges
+                        </a>
+                    </div>
+                    <div style="padding: 15px; background: rgba(212, 175, 55, 0.08); border-radius: 6px; border-left: 4px solid var(--neon-lime);">
+                        <h5 style="color: var(--neon-lime); margin-bottom: 10px;">2️⃣ Build Your Skills</h5>
+                        <p style="color: var(--text-secondary); margin-bottom: 10px;">Progress to Intermediate challenges to combine multiple vulnerability types.</p>
+                        <a href="{{ url_for('learning.challenges', difficulty='Intermediate') }}" class="btn btn-sm btn-outline-light" style="border-color: var(--neon-lime); color: var(--neon-lime);">
+                            View Intermediate Challenges
+                        </a>
+                    </div>
+                    <div style="padding: 15px; background: rgba(232, 213, 196, 0.08); border-radius: 6px; border-left: 4px solid var(--neon-pink);">
+                        <h5 style="color: var(--neon-pink); margin-bottom: 10px;">3️⃣ Master the Art</h5>
+                        <p style="color: var(--text-secondary); margin-bottom: 10px;">Tackle Advanced challenges and compete for the top spot on the leaderboard!</p>
+                        <a href="{{ url_for('learning.challenges', difficulty='Advanced') }}" class="btn btn-sm btn-outline-light" style="border-color: var(--neon-pink); color: var(--neon-pink);">
+                            View Advanced Challenges
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

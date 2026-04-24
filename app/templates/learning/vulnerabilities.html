@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="hero-title mb-2">🔍 Vulnerability Database</h1>
+            <p class="hero-description">Learn about common vulnerabilities and how to prevent them</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="neon-card neon-card-cyan-border">
+                <h5 style="color: var(--neon-cyan); margin-bottom: 15px;">Filter by Severity</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ url_for('learning.vulnerabilities', severity='All') }}" class="btn btn-sm {% if severity == 'All' %}btn-primary{% else %}btn-outline-light{% endif %}" style="{% if severity != 'All' %}border-color: var(--neon-cyan); color: var(--neon-cyan);{% endif %}">
+                        All
+                    </a>
+                    <a href="{{ url_for('learning.vulnerabilities', severity='Critical') }}" class="btn btn-sm {% if severity == 'Critical' %}btn-primary{% else %}btn-outline-light{% endif %}" style="{% if severity != 'Critical' %}border-color: var(--neon-pink); color: var(--neon-pink);{% endif %}">
+                        Critical
+                    </a>
+                    <a href="{{ url_for('learning.vulnerabilities', severity='High') }}" class="btn btn-sm {% if severity == 'High' %}btn-primary{% else %}btn-outline-light{% endif %}" style="{% if severity != 'High' %}border-color: var(--neon-lime); color: var(--neon-lime);{% endif %}">
+                        High
+                    </a>
+                    <a href="{{ url_for('learning.vulnerabilities', severity='Medium') }}" class="btn btn-sm {% if severity == 'Medium' %}btn-primary{% else %}btn-outline-light{% endif %}" style="{% if severity != 'Medium' %}border-color: var(--neon-cyan); color: var(--neon-cyan);{% endif %}">
+                        Medium
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for vuln in vulnerabilities %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <a href="{{ url_for('learning.vulnerability_detail', vuln_id=vuln.id) }}" class="text-decoration-none">
+                <div class="neon-card h-100 {% if vuln.severity == 'Critical' %}neon-card-pink-border{% elif vuln.severity == 'High' %}neon-card-lime-border{% elif vuln.severity == 'Medium' %}neon-card-cyan-border{% else %}neon-card-purple-border{% endif %}" style="transition: all 0.3s ease; cursor: pointer;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                        <div>
+                            <h5 style="color: {% if vuln.severity == 'Critical' %}var(--neon-pink){% elif vuln.severity == 'High' %}var(--neon-lime){% elif vuln.severity == 'Medium' %}var(--neon-cyan){% else %}var(--neon-purple){% endif %}; margin-bottom: 5px;">{{ vuln.name }}</h5>
+                            <small style="color: var(--text-secondary);">{{ vuln.category }}</small>
+                        </div>
+                        <span class="badge" style="background: {% if vuln.severity == 'Critical' %}var(--neon-pink){% elif vuln.severity == 'High' %}var(--neon-lime){% elif vuln.severity == 'Medium' %}var(--neon-cyan){% else %}var(--neon-purple){% endif %}; color: #0f0d15;">{{ vuln.severity }}</span>
+                    </div>
+
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 12px;">{{ vuln.description[:100] }}...</p>
+
+                    {% if vuln.cve_id %}
+                    <div style="padding: 8px; background: rgba(212, 175, 55, 0.05); border-radius: 4px; margin-bottom: 12px; font-size: 0.85rem;">
+                        <strong style="color: var(--neon-cyan);">CVE:</strong> <span style="color: var(--text-secondary);">{{ vuln.cve_id }}</span>
+                    </div>
+                    {% endif %}
+
+                    <small style="color: var(--neon-lime); display: block;">Learn More →</small>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if not vulnerabilities %}
+    <div class="neon-card neon-card-cyan-border text-center py-5">
+        <h4 style="color: var(--neon-cyan);">No vulnerabilities found</h4>
+        <p style="color: var(--text-secondary);">Check back soon for more vulnerability data!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
